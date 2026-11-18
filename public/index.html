@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Wallet Card</title>
+  <meta name="description" content="Make your business card in about a minute. Keep it on your phone and share it with a QR code.">
+  <meta name="theme-color" content="#fff8ec">
+  <meta name="color-scheme" content="light dark">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Wallet Card">
+
+  <link rel="preload" href="fonts/fredoka-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/nunito-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="vendor/qrcode.js" defer></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body data-view="loading">
+  <!-- Line-icon sprite and the mascot (no emojis anywhere in the UI). -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L6 21"/></symbol>
+    <symbol id="i-contact" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v13"/><path d="m7 8 5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></symbol>
+    <symbol id="i-install" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-ios-share" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><rect x="5" y="10" width="14" height="11" rx="2"/></symbol>
+    <symbol id="i-plus-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4M12 2v3"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="m14 7 3 3"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 2-2s-1-1.6-1-2.6c0-1 .8-1.9 2-1.9h2a4 4 0 0 0 4-4C21 6.4 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.3"/><circle cx="10" cy="7" r="1.3"/><circle cx="15" cy="7" r="1.3"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h1M20 14h1"/></symbol>
+
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><path class="glyph" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 16 16"><path class="glyph" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+
+    <!-- Mascot: a small business card with a face. Parts are styled and animated from styles.css. -->
+    <symbol id="mascot" viewBox="0 0 200 200">
+      <ellipse class="m-shadow" cx="100" cy="188" rx="46" ry="7"/>
+      <g class="m-bob">
+        <path class="m-line" d="M82 138v22M118 138v22"/>
+        <ellipse class="m-ink" cx="78" cy="164" rx="11" ry="6"/>
+        <ellipse class="m-ink" cx="122" cy="164" rx="11" ry="6"/>
+        <g class="m-arm-l">
+          <path class="m-line" d="M42 104c-12 4-20 12-24 22"/>
+          <circle class="m-hand" cx="17" cy="128" r="7"/>
+        </g>
+        <g class="m-arm-r">
+          <path class="m-line" d="M158 98c12-6 18-16 20-30"/>
+          <circle class="m-hand" cx="178" cy="64" r="7"/>
+        </g>
+        <rect class="m-card" x="40" y="48" width="120" height="92" rx="16"/>
+        <path class="m-band" d="M40 70v-6a16 16 0 0 1 16-16h88a16 16 0 0 1 16 16v6z"/>
+        <rect class="m-ink" x="132" y="116" width="18" height="18" rx="3"/>
+        <rect class="m-qr-hole" x="135.5" y="119.5" width="5" height="5"/>
+        <rect class="m-qr-hole" x="142" y="126" width="4" height="4"/>
+        <g class="m-eyes">
+          <ellipse class="m-ink" cx="82" cy="94" rx="7" ry="9"/>
+          <ellipse class="m-ink" cx="118" cy="94" rx="7" ry="9"/>
+          <circle class="m-shine" cx="84.5" cy="90.5" r="2.5"/>
+          <circle class="m-shine" cx="120.5" cy="90.5" r="2.5"/>
+        </g>
+        <ellipse class="m-cheek" cx="66" cy="108" rx="7" ry="4.5"/>
+        <ellipse class="m-cheek" cx="134" cy="106" rx="7" ry="4.5"/>
+        <path class="m-smile" d="M90 108q10 10 20 0"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Floating doodles behind everything (decorative). -->
+  <div class="doodles" aria-hidden="true">
+    <svg class="doodle d1" viewBox="0 0 40 40"><path d="M20 3l4.5 11.5L36 19l-11.5 4.5L20 35l-4.5-11.5L4 19l11.5-4.5z"/></svg>
+    <svg class="doodle d2" viewBox="0 0 60 20"><path d="M2 10c6-8 10 8 16 0s10 8 16 0 10 8 16 0 6-6 8-4"/></svg>
+    <svg class="doodle d3" viewBox="0 0 40 40"><circle cx="20" cy="20" r="14"/></svg>
+    <svg class="doodle d4" viewBox="0 0 40 40"><path d="M6 20h28M20 6v28"/></svg>
+    <svg class="doodle d5" viewBox="0 0 40 40"><rect x="7" y="11" width="26" height="18" rx="4"/></svg>
+    <svg class="doodle d6" viewBox="0 0 40 40"><path d="M20 3l4.5 11.5L36 19l-11.5 4.5L20 35l-4.5-11.5L4 19l11.5-4.5z"/></svg>
+  </div>
+
+  <header class="app-bar">
+    <button type="button" id="home-btn" class="brand" aria-label="Wallet Card home">
+      <svg class="mascot brand-mark" aria-hidden="true"><use href="#mascot"/></svg>
+      <span>Wallet Card</span>
+    </button>
+    <div class="app-bar-actions">
+      <button type="button" id="cancel-edit" class="btn btn-sm" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#i-qr"/></svg>
+        My card
+      </button>
+      <button type="button" id="install-btn" class="btn btn-sm" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#i-install"/></svg>
+        Install app
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ Welcome (first visit) ============ -->
+    <section id="view-welcome" class="view view-welcome" aria-labelledby="welcome-title" hidden>
+      <div class="welcome-hero">
+        <div class="hero-art" aria-hidden="true">
+          <div class="hero-blob"></div>
+          <div class="mini-card mc-a"><span></span><span></span><span></span></div>
+          <div class="mini-card mc-b"><span></span><span></span><span></span></div>
+          <svg class="mascot mascot-hero mascot-wave"><use href="#mascot"/></svg>
+          <div class="speech">Hi! Let's make yours.</div>
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">Business cards, minus the busywork</p>
+          <h1 id="welcome-title" class="display">Your card in about a <span class="scribble">minute</span>.</h1>
+          <p class="lead">Type a few details, pick a look, done. Then get back to the people you are meeting.</p>
+          <button type="button" id="start-btn" class="btn btn-primary btn-xl">
+            Make my card
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </button>
+          <p class="micro">No sign-up. Your card stays on your phone.</p>
+        </div>
+      </div>
+
+      <ol class="how" aria-label="How it works">
+        <li class="how-step tilt-l">
+          <span class="how-num" aria-hidden="true">1</span>
+          <svg class="how-icon" aria-hidden="true"><use href="#i-pencil"/></svg>
+          <h2>Fill in</h2>
+          <p>Your name, your job, how to reach you.</p>
+        </li>
+        <li class="how-step tilt-r">
+          <span class="how-num" aria-hidden="true">2</span>
+          <svg class="how-icon" aria-hidden="true"><use href="#i-palette"/></svg>
+          <h2>Style it</h2>
+          <p>One tap picks a look. Add a tagline if you like.</p>
+        </li>
+        <li class="how-step tilt-l">
+          <span class="how-num" aria-hidden="true">3</span>
+          <svg class="how-icon" aria-hidden="true"><use href="#i-qr"/></svg>
+          <h2>Show the QR</h2>
+          <p>They scan it and you are in their contacts.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ Editor (4 quick steps) ============ -->
+    <section id="view-editor" class="view view-editor" aria-labelledby="editor-heading" hidden>
+      <h1 id="editor-heading" class="visually-hidden">Make your card</h1>
+
+      <div class="editor-top">
+        <nav class="stepper" aria-label="Steps">
+          <div class="stepper-track" aria-hidden="true"><div class="stepper-fill" id="stepper-fill"></div></div>
+          <ol>
+            <li><button type="button" class="step-dot" data-goto="1"><span class="dot-num">1</span><span class="dot-label">You</span></button></li>
+            <li><button type="button" class="step-dot" data-goto="2"><span class="dot-num">2</span><span class="dot-label">Contact</span></button></li>
+            <li><button type="button" class="step-dot" data-goto="3"><span class="dot-num">3</span><span class="dot-label">Style</span></button></li>
+          </ol>
+        </nav>
+        <div class="stopwatch" role="timer" aria-live="off" aria-label="Time spent">
+          <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+          <span id="timer">0:00</span>
+        </div>
+      </div>
+
+      <div class="editor-layout">
+        <div class="preview-pane">
+          <div class="tilt" id="tilt">
+            <article id="preview" class="biz-card" aria-label="Card preview">
+              <span class="biz-shine" aria-hidden="true"></span>
+              <img id="pv-photo" class="biz-photo" alt="" hidden>
+              <div class="biz-text">
+                <p id="pv-name" class="biz-name">Your name</p>
+                <p id="pv-title" class="biz-title"></p>
+                <p id="pv-company" class="biz-label"></p>
+                <p id="pv-tagline" class="biz-tagline"></p>
+              </div>
+              <ul id="pv-contact" class="biz-contact"></ul>
+            </article>
+          </div>
+          <div class="buddy" aria-live="polite">
+            <svg class="mascot mascot-buddy" aria-hidden="true"><use href="#mascot"/></svg>
+            <p id="buddy-text" class="buddy-bubble">Start with your name. That is the only must.</p>
+          </div>
+        </div>
+
+        <form id="card-form" class="card-form" novalidate>
+          <div class="steps">
+            <!-- Step 1 -->
+            <section class="step" data-step="1" aria-labelledby="s1-title">
+              <p class="step-kicker">Step 1 of 3</p>
+              <h2 id="s1-title" class="step-title">Who are you?</h2>
+              <div class="field">
+                <label for="f-name">Name <span class="req">(required)</span></label>
+                <input id="f-name" name="name" type="text" autocomplete="name" maxlength="80" required aria-describedby="err-name">
+                <p id="err-name" class="field-error" hidden></p>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-title">Job title</label>
+                  <input id="f-title" name="title" type="text" autocomplete="organization-title" maxlength="80">
+                </div>
+                <div class="field">
+                  <label for="f-company">Company</label>
+                  <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="80">
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-location">Location</label>
+                <input id="f-location" name="location" type="text" autocomplete="address-level2" maxlength="80" placeholder="City, Country">
+              </div>
+              <div class="photo-row">
+                <img id="photo-thumb" class="photo-thumb" alt="Your photo" width="64" height="64" hidden>
+                <div class="field">
+                  <span class="label-like" id="photo-label">Photo (optional)</span>
+                  <label for="f-photo" class="btn btn-sm file-btn">
+                    <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+                    Choose a photo
+                  </label>
+                  <input id="f-photo" class="file-input" type="file" accept="image/*" aria-describedby="photo-hint">
+                  <p id="photo-hint" class="hint">Cropped to a square on this device. It never leaves your phone unless you share it.</p>
+                </div>
+                <button type="button" id="photo-remove" class="btn btn-sm btn-quiet" hidden>Remove</button>
+              </div>
+            </section>
+
+            <!-- Step 2 -->
+            <section class="step" data-step="2" aria-labelledby="s2-title" hidden>
+              <p class="step-kicker">Step 2 of 3</p>
+              <h2 id="s2-title" class="step-title">How do people reach you?</h2>
+              <p class="hint step-hint">Fill in any you like. Skip the rest.</p>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-email">Email</label>
+                  <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" aria-describedby="err-email">
+                  <p id="err-email" class="field-error" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="f-phone">Phone</label>
+                  <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40" aria-describedby="err-phone">
+                  <p id="err-phone" class="field-error" hidden></p>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="f-website">Website</label>
+                  <input id="f-website" name="website" type="url" inputmode="url" autocomplete="url" maxlength="200" placeholder="example.com" aria-describedby="err-website">
+                  <p id="err-website" class="field-error" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="f-linkedin">LinkedIn</label>
+                  <input id="f-linkedin" name="linkedin" type="text" inputmode="url" maxlength="200" placeholder="linkedin.com/in/you or handle" aria-describedby="err-linkedin">
+                  <p id="err-linkedin" class="field-error" hidden></p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Step 3 -->
+            <section class="step" data-step="3" aria-labelledby="s3-title" hidden>
+              <p class="step-kicker">Step 3 of 3</p>
+              <h2 id="s3-title" class="step-title">Make it yours</h2>
+              <fieldset class="presets-fieldset">
+                <legend>Pick a look</legend>
+                <div id="presets" class="presets"></div>
+              </fieldset>
+              <details class="custom-colors">
+                <summary>Or choose your own colours</summary>
+                <div class="color-row">
+                  <div class="field color-field">
+                    <label for="f-bg">Background</label>
+                    <input id="f-bg" name="background" type="color" value="#0f172a">
+                  </div>
+                  <div class="field color-field">
+                    <label for="f-fg">Text</label>
+                    <input id="f-fg" name="foreground" type="color" value="#f8fafc">
+                  </div>
+                  <div class="field color-field">
+                    <label for="f-label">Labels</label>
+                    <input id="f-label" name="label" type="color" value="#93c5fd">
+                  </div>
+                </div>
+              </details>
+              <div id="contrast-note" class="notice notice-warn" role="status" hidden>
+                <p id="contrast-text"></p>
+                <button type="button" id="contrast-fix" class="btn btn-sm">Fix contrast</button>
+              </div>
+              <div class="field">
+                <label for="f-tagline">Tagline</label>
+                <input id="f-tagline" name="tagline" type="text" maxlength="120" placeholder="One line about what you do">
+              </div>
+              <div class="field">
+                <label for="f-bio">Short bio</label>
+                <textarea id="f-bio" name="bio" rows="3" maxlength="500" aria-describedby="bio-hint"></textarea>
+                <p id="bio-hint" class="hint">Goes in the contact file you download. It is not put in the QR code.</p>
+              </div>
+              <p class="hint center save-note">Saved only on this device. Nothing is stored on a server.</p>
+            </section>
+
+          </div>
+
+          <div class="step-nav">
+            <button type="button" id="step-back" class="btn">
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>
+              Back
+            </button>
+            <button type="submit" id="step-next" class="btn btn-primary">
+              <span id="step-next-label">Next</span>
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ My Card view ============ -->
+    <section id="view-card" class="view view-card" aria-labelledby="mc-name" hidden>
+      <article class="mycard" id="mycard">
+        <header class="mycard-head">
+          <img id="mc-photo" class="mycard-photo" alt="" hidden>
+          <div>
+            <h1 id="mc-name" class="mycard-name"></h1>
+            <p id="mc-title" class="mycard-title"></p>
+            <p id="mc-company" class="mycard-company"></p>
+          </div>
+        </header>
+        <p id="mc-tagline" class="mycard-tagline"></p>
+
+        <div class="qr-panel">
+          <div id="qr" class="qr" role="img" aria-label="QR code"></div>
+          <p id="qr-caption" class="qr-caption"></p>
+        </div>
+
+        <fieldset class="segmented" id="qr-mode" data-mode="contact">
+          <legend class="visually-hidden">What the QR code opens</legend>
+          <span class="seg-pill" aria-hidden="true"></span>
+          <input type="radio" name="qrmode" id="qm-contact" value="contact" checked>
+          <label for="qm-contact">Contact</label>
+          <input type="radio" name="qrmode" id="qm-website" value="website">
+          <label for="qm-website">Website</label>
+          <input type="radio" name="qrmode" id="qm-linkedin" value="linkedin">
+          <label for="qm-linkedin">LinkedIn</label>
+        </fieldset>
+        <div id="qr-warning" class="notice notice-warn" role="status" hidden></div>
+      </article>
+
+      <div class="card-actions">
+        <button type="button" id="act-image" class="btn btn-card">
+          <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+          Save image
+        </button>
+        <button type="button" id="act-vcf" class="btn btn-card">
+          <svg class="icon" aria-hidden="true"><use href="#i-contact"/></svg>
+          Add to contacts
+        </button>
+        <button type="button" id="act-share" class="btn btn-card" hidden>
+          <svg class="icon" aria-hidden="true"><use href="#i-share"/></svg>
+          Share link
+        </button>
+        <button type="button" id="act-edit" class="btn btn-card">
+          <svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>
+          Edit card
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="made-by">Made by <strong>Bhargav Raj Dutta</strong></p>
+    <p class="more">More projects</p>
+    <div class="footer-links">
+      <a class="btn btn-sm social" href="https://www.linkedin.com/in/bhargav-raj-dutta-80251a1b4/" target="_blank" rel="noopener noreferrer">
+        <svg class="icon social-icon" aria-hidden="true"><use href="#i-linkedin"/></svg>
+        LinkedIn
+        <span class="visually-hidden">(opens in a new tab)</span>
+      </a>
+      <a class="btn btn-sm social" href="https://github.com/dev0558" target="_blank" rel="noopener noreferrer">
+        <svg class="icon social-icon" aria-hidden="true"><use href="#i-github"/></svg>
+        GitHub
+        <span class="visually-hidden">(opens in a new tab)</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Celebration after saving -->
+  <div id="celebrate" class="celebrate" hidden>
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+    <div class="celebrate-card" role="status" aria-live="polite">
+      <svg class="mascot mascot-cheer" aria-hidden="true"><use href="#mascot"/></svg>
+      <p class="celebrate-title" id="celebrate-title">Card ready!</p>
+      <p class="celebrate-time" id="celebrate-time"></p>
+      <button type="button" id="celebrate-close" class="btn btn-primary">Show my card</button>
+    </div>
+  </div>
+
+  <!-- One-time iOS install hint -->
+  <aside id="ios-hint" class="ios-hint" aria-labelledby="ios-hint-title" hidden>
+    <svg class="mascot mascot-hint" aria-hidden="true"><use href="#mascot"/></svg>
+    <div>
+      <p id="ios-hint-title" class="ios-hint-title">Keep your card one tap away</p>
+      <p>Tap <svg class="icon icon-inline" aria-label="Share"><use href="#i-ios-share"/></svg> <strong>Share</strong>, then
+        <svg class="icon icon-inline" aria-hidden="true"><use href="#i-plus-square"/></svg> <strong>Add to Home Screen</strong>.</p>
+    </div>
+    <button type="button" id="ios-hint-close" class="icon-btn" aria-label="Dismiss">
+      <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+    </button>
+  </aside>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <noscript><p class="noscript">Wallet Card needs JavaScript to build your card on this device.</p></noscript>
+</body>
+</html>
